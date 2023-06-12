@@ -1,108 +1,107 @@
 from fastapi import FastAPI
-import csv
-import sklearn
 import pandas as pd
+
+
+df = pd.read_csv('data/df_movies.csv')
+df['release_date'] = pd.to_datetime(df['release_date'])
+
 app = FastAPI()
 
 
-# Cargar el primer dataset
-df = pd.read_csv('ruta_del_archivo1.csv')
-
-# Cargar el segundo dataset
-df2 = pd.read_csv('ruta_del_archivo2.csv')
-
-# Cargar el primer dataset
-merged_df = pd.read_csv('ruta_del_archivo1.csv')
-
-
-
 #API 1
-@app.get("/filmaciones/{mes}")
+@app.get("/cantidad_filmaciones_mes/{mes}")
 def cantidad_filmaciones_mes(mes):
-    fechas = pd.to_datetime(df['release_date'], format='%Y-%m-%d')
-    nmes = fechas[fechas.dt.month_name(locale='es_CO') == mes.capitalize()]
-    respuesta = nmes.shape[0]
-    return {'mes': mes, 'cantidad': respuesta}
-
+    fechas=pd.to_datetime(df['release_date'],format='%Y-%m-%d')
+    nmes=fechas[fechas.dt.month_name(locale='es_CO')==mes.capitalize()]
+    respuesta=nmes.shape[0]
+    return {'mes':mes, 'cantidad':respuesta}
 
 
 #API 2
-@app.get("/cantidad_filmaciones/{dia}")
+@app.get("/cantidad_filmaciones_dia/{dia}")
 def cantidad_filmaciones_dia(dia):
-    fechas=pd.to_datetime(df['release_date'],format='%Y-%m-%d')
-    ndia=fechas[fechas.dt.day_name(locale='es_CO')==dia.capitalize()]
-    respuesta=ndia.shape[0]
-    return {'dia':dia, 'cantidad':respuesta}
 
+    ndia= df['release_date'].dt.day_name(locale='es_CO')==dia.capitalize()
+    respuesta=ndia.sum()
+    return {'dia':dia, 'cantidad':str(respuesta)}
 
 
 #API 3
-@app.get("/titulo_de_la_filmacion/")
+@app.get("/score_titulo/")
 def score_titulo(titulo_de_la_filmacion):
-    pelicula = df[df['original_title'] == titulo_de_la_filmacion]
-
+    # Filtrar el DataFrame por el título de la filmación
+    pelicula = df[df['title'] == titulo_de_la_filmacion]
     if len(pelicula) > 0:
-        año_estreno = pelicula['release_date'].values[0].split('-')[0]
+        # Obtener el año de estreno y la popularidad
+        año_estreno = pelicula['release_year'].values[0]
         popularidad = pelicula['popularity'].values[0]
 
-        return titulo_de_la_filmacion, año_estreno, popularidad
+        return {'titulo': titulo_de_la_filmacion, 'anio':año_estreno, 'popularidad': popularidad}
     else:
-        return None
-
-# Ejemplo de uso de la función score_titulo
-titulo = ''
-resultado = score_titulo(titulo)
-
-if resultado:
-    titulo, año_estreno, popularidad = resultado
-    print(f"Título: {titulo}")
-    print(f"Año de estreno: {año_estreno}")
-    print(f"Popularidad: {popularidad}")
-else:
-    print("No se encontró información para el título de la filmación.")
-
-
+        return {'titulo': None, 'anio':None, 'popularidad': None}
 
 
 #API 4
-@app.get("/votos_promedio_titulo/")
+@app.get("/votos_titulo/")
 def votos_promedio_titulo(titulo_de_la_filmacion):
     # Filtrar el DataFrame por el título de la filmación
-    pelicula = df[df['original_title'] == titulo_de_la_filmacion]
+    pelicula = df[df['title'] == titulo_de_la_filmacion]
 
     # Obtener la cantidad de votos y el valor promedio de las votaciones
     votos = pelicula['vote_count'].values[0]
     promedio_votos = pelicula['vote_average'].values[0]
-
+    año_estreno = pelicula['release_year'].values[0]
+    
     if votos >= 2000:
-        return titulo_de_la_filmacion, votos, promedio_votos
+        return {'titulo': titulo_de_la_filmacion, 'anio':año_estreno, 'voto_total': votos, 'voto_promedio': promedio_votos}
     else:
-        return None
-
-# Ejemplo de uso de la función votos_promedio_titulo
-titulo = ''
-resultado = votos_promedio_titulo(titulo)
-
-if resultado:
-    titulo, votos, promedio_votos = resultado
-    print(f"Título: {titulo}")
-    print(f"Cantidad de votos: {votos}")
-    print(f"Valor promedio de las votaciones: {promedio_votos}")
-else:
-    print("La filmación no cumple con la condición de tener al menos 2000 valoraciones.")
+        return {'titulo': None, 'anio':None, 'voto_total': None, 'voto_promedio': None }
 
 
+#API 5
+@app.get("/get_actor/")
+def get_actor(nombre_actor: str):
+    actor_films = df[df['cast'].apply(lambda x: nombre_actor in x)]
+    if actor_films.empty:
+        return {"mensaje": "El actor no fue encontrado en ninguna filmación."} 
+    
+    cantidad_films = actor_films.shape[0]
+    retorno_total = actor_films['return'].sum()
+    promedio_retorno = actor_films['return'].mean()
+    
+    return {"actor": nombre_actor, "cantidad_films": cantidad_films, "retorno_total": retorno_total, "promedio_retorno": promedio_retorno}
 
 
-
-
-
-with open('database/books.csv', mode='r') as file:
-    reader = csv.DictReader(file)
-
-    conn = engine.connect()
-    conn.begin()
-    for book in reader:
-        conn.execute(books.insert().values(book))
-    conn.commit()
-    conn.close()
+#API 6
+@app.get("/get_director/")
+def get_director(nombre_director: str):
+    director_data = df[df['crew'].apply(lambda x: nombre_director in x)]
+    if director_data.empty:
+        return {"mensaje": "Director no encontrado"}
+    
+    peliculas = []
+    retorno_maximo = 0
+    exito = None
+    
+    for _, row in director_data.iterrows():
+        pelicula = {
+            "titulo": row['title'],
+            "fecha_lanzamiento": row['release_date'],
+            "retorno": row['return'],
+            "costo": row['budget'],
+            "ganancia": row['revenue']
+        }
+        peliculas.append(pelicula)
+        
+        if row['return'] > retorno_maximo:
+            retorno_maximo = row['return']
+            exito = row['title']
+    
+    return {
+        "director": nombre_director,
+        "exito": exito,
+        "peliculas": peliculas}
+    
+    
+    
+    

@@ -1,5 +1,5 @@
 __pycache__
-venv/
+venv
 .vscode
 credits.csv
 movies_dataset.csv
