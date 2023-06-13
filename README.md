@@ -1,6 +1,6 @@
 ### PROYECTO INDIVIDUAL Nº1 (MACHINE LEARNING)
 
-[img src= "https://www.iberdrola.com/documents/20125/40921/machine_learning_746x419.jpg/15ff7571-4cfc-d9f0-5ef4-9c2e9306ad88?t=1627968463400" width=115><br><sub>esteff3333</sub>](https://github.com/esteff3333)
+[<img src= "https://www.iberdrola.com/documents/20125/40921/machine_learning_746x419.jpg/15ff7571-4cfc-d9f0-5ef4-9c2e9306ad88?t=1627968463400" width=115><br><sub>esteff3333</sub>] (https://github.com/esteff3333)
 
 
 Autora: Estefania Serna 
@@ -38,10 +38,10 @@ En la fase posterior se pedia el desarrollo de 6 API, para hacer consultas acerc
 
 ## Objetivos
 
-*(ETL) Proceso de transformacion y limpieza de datos.
-*Realizacion de endpoints para la API
-*Crear la API en la libreria FastAPI
-*Hacer el deploy de la API en Render
+- (ETL) Proceso de transformacion y limpieza de datos.
+- Realizacion de endpoints para la API
+- Crear la API en la libreria FastAPI
+- Hacer el deploy de la API en Render
 
 
 ## ETL
@@ -78,6 +78,6 @@ En resumen, el proceso de despliegue en Render y creación de la página web imp
 
 https://drive.google.com/file/d/1fFspyW31i9jP9S-RJijWPeHjCbKm2dHj/view?usp=drive_link
 
-Github: esteff3333
+- Github: esteff3333
 LinkedIN: https://www.linkedin.com/in/estefania-serna-961944196/
 
