@@ -1,4 +1,10 @@
-(foto de presentacion con mi nombre y nombre del proyecto)
+### PROYECTO INDIVIDUAL Nº1 (MACHINE LEARNING)
+
+
+Autora: Estefania Serna 
+
+
+
 ## Indice
 <!-- TABLA DE CONTENIDO -->
 <details>
@@ -20,9 +26,11 @@
 
 
 ## Introduccion 
-A continuacion les presento mi primer proyecto de trabajo en Henry. Este proceso ha sido satisfactorio y un camino de mucho trabajo y aprendizaje. 
+A continuacion les presento mi primer proyecto de trabajo en Henry, una API de recomendacion para peliculas.
 
-Trabaje con un dataset de peliculas el cual estaba sin normalizar, entonces antes de empezar a desarrollar el objetivo principal del proyecto tuve normalizar el dataset, elimando valores nulos, eliminando columnas innecesarias y desanidando algunos diccionarios para el facil acceso de los datos. En la fase posterior se me pedia el desarrollo de una API, para ser mas precisos un sistema de recomendacion. 
+Trabaje con un dataset de peliculas el cual estaba sin normalizar, antes de empezar a desarrollar el objetivo principal del proyecto (crear una API y un sistema de recomendacion) se tuvo que hacer un proceso de ETL en el dataset, eliminar valores nulos, eliminar columnas innecesarias y desanidando algunos diccionarios para el facil acceso de los datos. 
+
+En la fase posterior se pedia el desarrollo de 6 API, para hacer consultas acerca de las peliculas, actores, directores, el exito y el promedio de cada una de ellas. Y por ultimo el EDA
 
 ## Objetivos
 

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import pandas as pd
+import locale
 
 
 df = pd.read_csv('data/df_movies.csv')
@@ -10,20 +11,41 @@ app = FastAPI()
 
 #API 1
 @app.get("/cantidad_filmaciones_mes/{mes}")
-def cantidad_filmaciones_mes(mes):
-    fechas=pd.to_datetime(df['release_date'],format='%Y-%m-%d')
-    nmes=fechas[fechas.dt.month_name(locale='es_CO')==mes.capitalize()]
-    respuesta=nmes.shape[0]
-    return {'mes':mes, 'cantidad':respuesta}
+def cantidad_filmaciones_mes(mes: str):
+    df["release_date"] = pd.to_datetime(df["release_date"], errors='coerce')
+    meses = {"enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6, "julio": 7,
+             "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12}
+    
+    mes_numero = meses.get(mes.lower())
+    contador = 0 
+    
+    for fecha in df["release_date"]:
+        if pd.notnull(fecha) and fecha.month == mes_numero:
+            contador += 1
+
+    return {'mes': mes, 'cantidad': contador}
 
 
 #API 2
 @app.get("/cantidad_filmaciones_dia/{dia}")
-def cantidad_filmaciones_dia(dia):
-
-    ndia= df['release_date'].dt.day_name(locale='es_CO')==dia.capitalize()
-    respuesta=ndia.sum()
-    return {'dia':dia, 'cantidad':str(respuesta)}
+def cantidad_filmaciones_dia(dia:str):
+    df["release_date"] = pd.to_datetime(df["release_date"])
+    dias_semana = {
+    'lunes': 0, 
+    'martes' : 1,
+    'miercoles' : 2,
+    'jueves' : 3,
+    'viernes' : 4,
+    'sabado' : 5,
+    'domingo' :6}
+    
+    dia_numero = dias_semana.get(dia.lower())
+    contador = 0 
+    
+    for fecha in df["release_date"]:
+        if fecha.weekday() == dia_numero:
+            contador += 1
+    return {'dia':dia, 'cantidad':contador}
 
 
 #API 3
