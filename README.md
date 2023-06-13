@@ -1,6 +1,6 @@
 ### PROYECTO INDIVIDUAL Nº1 (MACHINE LEARNING)
 
-[<img src= "https://www.iberdrola.com/documents/20125/40921/machine_learning_746x419.jpg/15ff7571-4cfc-d9f0-5ef4-9c2e9306ad88?t=1627968463400" width=115><br><sub>esteff3333</sub>] (https://github.com/esteff3333)
+[<img src= "https://www.iberdrola.com/documents/20125/40921/machine_learning_746x419.jpg/15ff7571-4cfc-d9f0-5ef4-9c2e9306ad88?t=1627968463400" width=115><br><sub>esteff3333</sub>](https://github.com/esteff3333)
 
 
 Autora: Estefania Serna 
